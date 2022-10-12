@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "be8b1237-dbb0-4579-ad5e-10ccddb8b3f8",
+		"_postman_id": "1f1520f6-2738-4cf8-8455-287667839eb5",
 		"name": "Restful Booker BVT",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18084938"
 	},
 	"item": [
 		{
@@ -24,6 +25,7 @@
 									"    // https://www.chaijs.com/api/bdd",
 									"    pm.expect(jsonData).to.not.have.lengthOf(0);",
 									"});",
+									"postman.setNextRequest(\"Ping\");",
 									""
 								],
 								"type": "text/javascript"
@@ -1119,6 +1121,38 @@
 			]
 		},
 		{
+			"name": "Ping",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Ping is successful\", function () {",
+							"    pm.response.to.be.success;",
+							"});",
+							"",
+							"postman.setNextRequest(null);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{rb_url}}/ping",
+					"host": [
+						"{{rb_url}}"
+					],
+					"path": [
+						"ping"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Auth",
 			"event": [
 				{
@@ -1146,8 +1180,8 @@
 						"value": "application/json"
 					},
 					{
-						"key": "x-mock-response-name",
-						"value": "Auth Missing Token",
+						"key": "x-most-response-name",
+						"value": "Auth Token Missing",
 						"type": "text"
 					}
 				],
@@ -1192,25 +1226,50 @@
 					},
 					"status": "Bad Request",
 					"code": 400,
-					"_postman_previewlanguage": null,
+					"_postman_previewlanguage": "json",
 					"header": null,
 					"cookie": [],
-					"body": "{\r\n    \"token\": \"597f2db0a4ecdff\"\r\n}"
+					"body": "{\r\n    \"token\": \"41b45b858dae950\"\r\n}"
 				},
 				{
-					"name": "Auth Missing Token",
+					"name": "Auth is OK",
 					"originalRequest": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							},
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\" : \"admin\",\n    \"password\" : \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{rb_url}}/auth",
+							"host": [
+								"{{rb_url}}"
+							],
+							"path": [
+								"auth"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "{\r\n    \"token\": \"41b45b858dae950\"\r\n}"
+				},
+				{
+					"name": "Auth Token Missing",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
 							{
-								"key": "",
-								"value": "",
-								"type": "text",
-								"disabled": true
+								"key": "Content-Type",
+								"value": "application/json"
 							}
 						],
 						"body": {
@@ -1229,44 +1288,12 @@
 					},
 					"status": "Bad Request",
 					"code": 400,
-					"_postman_previewlanguage": null,
+					"_postman_previewlanguage": "json",
 					"header": null,
 					"cookie": [],
 					"body": "{\r\n    \"token\": \"\"\r\n}"
 				}
 			]
-		},
-		{
-			"name": "Ping",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Ping is successful\", function () {",
-							"    pm.response.to.be.success;",
-							"});",
-							"",
-							"postman.setNextRequest(null);"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{rb_url}}/ping",
-					"host": [
-						"{{rb_url}}"
-					],
-					"path": [
-						"ping"
-					]
-				}
-			},
-			"response": []
 		},
 		{
 			"name": "Delete Booking",
@@ -1405,9 +1432,7 @@
 					"    },",
 					"    \"additionalneeds\" : pm.variables.get(\"additionalneeds\")",
 					"}",
-					"pm.variables.set(\"new_booking\", booking)",
-					"",
-					"postman.setNextRequest(\"Ping\")"
+					"pm.variables.set(\"new_booking\", booking)"
 				]
 			}
 		},
